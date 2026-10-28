@@ -1,4 +1,4 @@
-# DevTrack — Developer Growth Tracker
+# DevTracks — Developer Growth Tracker
 Track coding sessions, learning goals, completed projects, and weekly progress in a personal developer dashboard.
 
 A personal dashboard for tracking coding time, learning goals, and project milestones.
