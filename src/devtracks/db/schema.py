@@ -1,14 +1,14 @@
 from datetime import datetime, timedelta
 from uuid import uuid4
 
-from sqlalchemy import UUID, DateTime, ForeignKey, String, Text, func
+from sqlalchemy import UUID, Computed, DateTime, ForeignKey, String, Text, func
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped, mapped_column
 
 from devtracks.db import Base
 
 
-class Users(Base):
+class User(Base):
     __tablename__ = "users"
 
     id: Mapped[UUID] = mapped_column(
@@ -16,7 +16,7 @@ class Users(Base):
     )
     name: Mapped[str] = mapped_column(String(50), nullable=False)
     email: Mapped[str] = mapped_column(String(255), nullable=False)
-    pass_hash: Mapped[str] = mapped_column(String(255), nullable=False)
+    hash_pwd: Mapped[str] = mapped_column(String(255), nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
@@ -25,7 +25,7 @@ class Users(Base):
     )
 
 
-class Projects(Base):
+class Project(Base):
     __tablename__ = "projects"
 
     id: Mapped[UUID] = mapped_column(
@@ -44,7 +44,7 @@ class Projects(Base):
     )
 
 
-class Goals(Base):
+class Goal(Base):
     __tablename__ = "goals"
 
     id: Mapped[UUID] = mapped_column(
@@ -76,13 +76,13 @@ class Sessions(Base):
         UUID(as_uuid=True), ForeignKey("users.id"), nullable=False
     )
     goal_id: Mapped[UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("goals.id"), nullable=False
+        UUID(as_uuid=True), ForeignKey("goals.id"), nullable=True
     )
     start_time: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False
     )
     end_time: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
-    @hybrid_property
-    def duration(self) -> timedelta:
-        return self.end_time - self.start_time
+    duration: Mapped[timedelta] = mapped_column(
+        Computed("end_time - start_time"), nullable=False
+    )

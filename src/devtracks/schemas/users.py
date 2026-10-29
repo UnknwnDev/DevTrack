@@ -1,7 +1,17 @@
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+    message: str
+
+
+class TokenData(BaseModel):
+    user_id: str | None = None
 
 
 class User(BaseModel):
@@ -15,7 +25,12 @@ class User(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-class UserCreate(BaseModel):
-    email: str
-    name: str
+class UserRegisterRequest(BaseModel):
+    email: EmailStr
+    name: str = Field(..., min_length=3, max_length=50)
+    password: str = Field(..., min_length=8)
+
+
+class UserLoginRequest(BaseModel):
+    email: str | None
     password: str
