@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from devtracks.api.v1 import auth, sessions
+from devtracks.api.v1 import activity, auth
 from devtracks.db import Base, engine
 
 version = "v1"
@@ -18,4 +18,4 @@ def health_check():
 
 
 app.include_router(auth.router, prefix=ver_prefix)
-app.include_router(sessions.router, prefix=ver_prefix)
+app.include_router(activity.router, prefix=ver_prefix)

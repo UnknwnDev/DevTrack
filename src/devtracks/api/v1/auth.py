@@ -16,7 +16,7 @@ def get_user_service(session: Session = Depends(get_session)) -> UserService:
 
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
-def create_user(
+def register_user(
     payload: UserRegisterRequest, services: UserService = Depends(get_user_service)
 ):
     new_user = services.register_user(payload)

@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 from uuid import uuid4
 
 from sqlalchemy import UUID, Computed, DateTime, ForeignKey, String, Text, func
-from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped, mapped_column
 
 from devtracks.db import Base
@@ -66,8 +65,8 @@ class Goal(Base):
     )
 
 
-class Sessions(Base):
-    __tablename__ = "sessions"
+class Activity(Base):
+    __tablename__ = "activity"
 
     id: Mapped[UUID] = mapped_column(
         UUID(as_uuid=True), primary_key=True, default=uuid4

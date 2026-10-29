@@ -14,7 +14,7 @@ def empty_string_to_none(v):
 OptionalUUID = Annotated[UUID | None, BeforeValidator(empty_string_to_none)]
 
 
-class SessionLogRequest(BaseModel):
+class ActivityLogRequest(BaseModel):
     goal_id: OptionalUUID = None
     start_time: datetime
     end_time: datetime
