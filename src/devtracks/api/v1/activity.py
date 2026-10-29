@@ -7,7 +7,7 @@ from devtracks.db.schema import User
 from devtracks.schemas.activity import ActivityLogRequest
 from devtracks.services.activity import LogService
 
-router = APIRouter(prefix="/session", tags=["Activity"])
+router = APIRouter(prefix="/activity", tags=["Activity"])
 
 
 def get_session_service(
@@ -18,21 +18,21 @@ def get_session_service(
 
 
 @router.get("")
-def get_activitys(service: LogService = Depends(get_session_service)):
-    activitys = service.get_activitys()
-    return {"message": "Retrieved activitys successfully", "activitys": activitys}
+def get_activities(service: LogService = Depends(get_session_service)):
+    activities = service.get_activitys()
+    return {"message": "Retrieved activities successfully", "activities": activities}
 
 
 @router.get("{id}")
 def get_activity_by_id(id, service: LogService = Depends(get_session_service)):
-    session = service.get_activity_by_id(id)
-    return {session}
+    activity = service.get_activity_by_id(id)
+    return {"message": "Retreieved activity", "activity": activity}
 
 
-@router.post("/activity", status_code=status.HTTP_201_CREATED)
+@router.post("/log", status_code=status.HTTP_201_CREATED)
 def create_activity(
     payload: ActivityLogRequest,
     service: LogService = Depends(get_session_service),
 ):
-    session = service.log_activity(payload)
-    return {"message": "Logged activity Successfully", "session_id": session.id}
+    activity = service.log_activity(payload)
+    return {"message": "Logged activity Successfully", "session_id": activity.id}
