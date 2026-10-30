@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from devtracks import get_current_user
+from devtracks import get_current_active_user
 from devtracks.db import get_session
 from devtracks.db.schema import User
 from devtracks.schemas.activity import ActivityLogRequest
@@ -12,7 +12,7 @@ router = APIRouter(prefix="/activity", tags=["Activity"])
 
 def get_session_service(
     session: Session = Depends(get_session),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_active_user),
 ) -> LogService:
     return LogService(session=session, current_user=current_user)
 
@@ -23,7 +23,7 @@ def get_activities(service: LogService = Depends(get_session_service)):
     return {"message": "Retrieved activities successfully", "activities": activities}
 
 
-@router.get("{id}")
+@router.get("/{id}")
 def get_activity_by_id(id, service: LogService = Depends(get_session_service)):
     activity = service.get_activity_by_id(id)
     return {"message": "Retreieved activity", "activity": activity}
@@ -35,4 +35,4 @@ def create_activity(
     service: LogService = Depends(get_session_service),
 ):
     activity = service.log_activity(payload)
-    return {"message": "Logged activity Successfully", "session_id": activity.id}
+    return {"message": "Logged activity Successfully", "id": activity.id}

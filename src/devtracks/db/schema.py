@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from uuid import uuid4
 
-from sqlalchemy import UUID, Computed, DateTime, ForeignKey, String, Text, func
+from sqlalchemy import UUID, Boolean, Computed, DateTime, ForeignKey, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from devtracks.db import Base
@@ -56,7 +56,9 @@ class Goal(Base):
         UUID(as_uuid=True), ForeignKey("projects.id"), nullable=False
     )
     title: Mapped[str] = mapped_column(String(100), nullable=False)
-    completed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    completed: Mapped[bool] = mapped_column(
+        Boolean(False), nullable=False, default=False
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )

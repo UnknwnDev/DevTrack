@@ -1,6 +1,5 @@
 from argon2 import PasswordHasher
 from fastapi import HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -13,7 +12,6 @@ class UserService:
     def __init__(self, session: Session) -> None:
         self._ph = PasswordHasher()
         self._db = session
-        self._oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
     def register_user(self, payload: UserRegisterRequest) -> User:
         existing_user = self._db.scalars(
