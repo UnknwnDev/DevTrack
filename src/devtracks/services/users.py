@@ -5,6 +5,11 @@ from sqlalchemy.orm import Session
 
 from devtracks.core.security import create_access_token
 from devtracks.db.schema import User
+from devtracks.exceptions.exceptions import (
+    InvalidCredentials,
+    UserAlreadyExists,
+    UserNotFound,
+)
 from devtracks.schemas.users import UserLoginRequest, UserRegisterRequest
 
 
@@ -21,10 +26,7 @@ class UserService:
         ).first()
 
         if existing_user:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Email or username is already registred.",
-            )
+            raise UserAlreadyExists
 
         hash_pwd = self._ph.hash(payload.password)
         new_user = User(email=payload.email, hash_pwd=hash_pwd, name=payload.name)
@@ -38,11 +40,7 @@ class UserService:
         user = self._db.scalars(select(User).where(User.email == payload.email)).first()
 
         if not user or not self._ph.verify(user.hash_pwd, payload.password):
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Incorrect email or password.",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
+            raise InvalidCredentials
 
         access_token = create_access_token(user.id)
         return access_token
@@ -51,9 +49,6 @@ class UserService:
         user = self._db.scalars(select(User).where(User.id == id)).first()
 
         if not user:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="User not found.",
-            )
+            raise UserNotFound
 
         return user

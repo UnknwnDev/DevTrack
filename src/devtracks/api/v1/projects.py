@@ -7,7 +7,7 @@ from devtracks.db.schema import User
 from devtracks.schemas.projects import ProjectCreateRequest
 from devtracks.services.projects import ProjectService
 
-router = APIRouter(prefix="/project", tags=["Projects"])
+router = APIRouter(prefix="/projects", tags=["Projects"])
 
 
 def get_project_session(
@@ -23,12 +23,6 @@ def get_projects(service: ProjectService = Depends(get_project_session)):
     return {"message": "Successfully retrieved users' projects", "projects": projects}
 
 
-@router.get("/{id}")
-def get_project_by_id(id, service: ProjectService = Depends(get_project_session)):
-    project = service.get_project_by_id(id)
-    return {"message": "Successfully retrieved users' project", "project": project}
-
-
 @router.post("")
 def create_project(
     payload: ProjectCreateRequest,
@@ -39,11 +33,17 @@ def create_project(
     return {"message": "Successfully created project.", "id": new_project.id}
 
 
-@router.post("/{id}")
-def edit_project(
+@router.get("/{id}")
+def get_project_by_id(id, service: ProjectService = Depends(get_project_session)):
+    project = service.get_project_by_id(id)
+    return {"message": "Successfully retrieved users' project", "project": project}
+
+
+@router.put("/{id}")
+def update_project(
     id,
     payload: ProjectCreateRequest,
     service: ProjectService = Depends(get_project_session),
 ):
-    project = service.edit_project(id, payload)
+    project = service.update_project(id, payload)
     return {"message": "Successfully edited project", "id": project.id}

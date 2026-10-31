@@ -3,6 +3,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from devtracks.db.schema import Goal, User
+from devtracks.exceptions.exceptions import GoalNotFound
 from devtracks.schemas.goals import GoalCreateRequest, GoalEditRequest
 
 
@@ -13,11 +14,6 @@ class GoalService:
 
     def get_goals(self) -> list[Goal]:
         goals = self._db.scalars(select(Goal).where(Goal.user_id == self._curr_user.id))
-        if goals is None:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="No goals found for user."
-            )
-
         return list(goals)
 
     def get_goal_by_id(self, id) -> Goal:
@@ -26,9 +22,7 @@ class GoalService:
         ).first()
 
         if goal is None:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="No goal found for user."
-            )
+            raise GoalNotFound
 
         return goal
 
@@ -43,15 +37,13 @@ class GoalService:
 
         return new_goal
 
-    def edit_goal(self, id, payload: GoalEditRequest) -> Goal:
+    def update_goal(self, id, payload: GoalEditRequest) -> Goal:
         goal = self._db.scalars(
             select(Goal).where(Goal.user_id == self._curr_user.id).where(Goal.id == id)
         ).first()
 
         if goal is None:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="goal not found."
-            )
+            raise GoalNotFound
 
         if payload.title.strip():
             goal.title = payload.title

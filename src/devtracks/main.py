@@ -3,11 +3,14 @@ from fastapi import Depends, FastAPI
 from devtracks import *
 from devtracks.api.v1 import activity, auth, goals, projects
 from devtracks.db import Base, engine
+from devtracks.exceptions.exceptions import register_all_errors
 
 
 app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
+
+register_all_errors(app)
 
 
 @app.get("/health", tags=["System"])

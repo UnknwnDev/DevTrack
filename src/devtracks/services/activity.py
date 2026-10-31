@@ -3,6 +3,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from devtracks.db.schema import Activity, User
+from devtracks.exceptions.exceptions import ActivityNotFound
 from devtracks.schemas.activity import ActivityLogRequest
 
 
@@ -24,10 +25,7 @@ class LogService:
             .where(Activity.id == id)
         ).first()
         if session is None:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Session Log does not exist.",
-            )
+            raise ActivityNotFound
         return session
 
     def log_activity(self, payload: ActivityLogRequest) -> Activity:

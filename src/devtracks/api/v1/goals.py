@@ -7,7 +7,7 @@ from devtracks.db.schema import User
 from devtracks.schemas.goals import GoalCreateRequest, GoalEditRequest
 from devtracks.services.goals import GoalService
 
-router = APIRouter(prefix="/goal", tags=["Goals"])
+router = APIRouter(prefix="/goals", tags=["Goals"])
 
 
 def get_goals_service(
@@ -23,12 +23,6 @@ def get_goals(service: GoalService = Depends(get_goals_service)):
     return {"message": "Successfuly retrived users goals", "goals": goals}
 
 
-@router.get("/{id}")
-def get_goal_by_id(id, service: GoalService = Depends(get_goals_service)):
-    goal = service.get_goal_by_id(id)
-    return {"message": "Successfully retrived", "goal": goal}
-
-
 @router.post("")
 def create_goal(
     payload: GoalCreateRequest, service: GoalService = Depends(get_goals_service)
@@ -37,9 +31,15 @@ def create_goal(
     return {"message": "Successfully created goal.", "id": new_goal.id}
 
 
-@router.post("/{id}")
-def edit_goal(
+@router.get("/{id}")
+def get_goal_by_id(id, service: GoalService = Depends(get_goals_service)):
+    goal = service.get_goal_by_id(id)
+    return {"message": "Successfully retrived", "goal": goal}
+
+
+@router.put("/{id}")
+def update_goal(
     id, payload: GoalEditRequest, service: GoalService = Depends(get_goals_service)
 ):
-    goal = service.edit_goal(id, payload)
+    goal = service.update_goal(id, payload)
     return {"message": "Successfully edited goal.", "id": goal.id}
