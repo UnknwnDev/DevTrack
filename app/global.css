@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #FFFFFF;
+    --background-high: #FFFFFF;
+    --surface: #FFFFFF;
+    --surface-strong: #F3F7F0;
+    --border: rgba(14, 15, 12, 0.12);
+    --text: #0E0F0C;
+    --text-muted: #454745;
+    --primary: #163300;
+    --primary-soft: rgba(22, 51, 0, 0.08);
+    --primary-foreground: #FFFFFF;
+    --accent: #9FE870;
+    --accent-foreground: #163300;
+    --secondary: #163300;
+    --secondary-soft: rgba(22, 51, 0, 0.08);
+    --secondary-foreground: #9FE870;
+    --muted: rgba(22, 51, 0, 0.08);
+    --muted-foreground: #454745;
+    --info: #163300;
+    --info-soft: #A0E1E1;
+    --warning: #3A341C;
+    --warning-soft: #FFEB69;
+    --success: #2F5711;
+    --success-soft: #DFF2D2;
+    --danger: #A8200D;
+    --danger-soft: #F6DDD8;
+    --mint: #F3F7F0;
+    --aqua: #E9F7F7;
+    --peach: #FFF0E6;
+    --lavender: #F4EAF7;
+    --lemon: #FFF9D9;
+    --ink: #163300;
+  }
+
+  .dark {
+    --background: #121511;
+    --background-high: #163300;
+    --surface: #1B2118;
+    --surface-strong: #23301C;
+    --border: rgba(255, 255, 255, 0.14);
+    --text: #FFFFFF;
+    --text-muted: #D7DDD1;
+    --primary: #9FE870;
+    --primary-soft: rgba(159, 232, 112, 0.16);
+    --primary-foreground: #163300;
+    --accent: #9FE870;
+    --accent-foreground: #163300;
+    --secondary: #FFFFFF;
+    --secondary-soft: rgba(255, 255, 255, 0.12);
+    --secondary-foreground: #163300;
+    --muted: rgba(255, 255, 255, 0.10);
+    --muted-foreground: #D7DDD1;
+    --info: #A0E1E1;
+    --info-soft: #173334;
+    --warning: #FFEB69;
+    --warning-soft: #3A341C;
+    --success: #9FE870;
+    --success-soft: #253B18;
+    --danger: #FFC091;
+    --danger-soft: #320707;
+    --mint: #253B18;
+    --aqua: #173334;
+    --peach: #3A2418;
+    --lavender: #260A2F;
+    --lemon: #3A341C;
+    --ink: #163300;
+  }
+}
