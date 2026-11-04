@@ -4,70 +4,36 @@
 
 @layer base {
   :root {
-    --background: #FFFFFF;
-    --background-high: #FFFFFF;
-    --surface: #FFFFFF;
-    --surface-strong: #F3F7F0;
-    --border: rgba(14, 15, 12, 0.12);
-    --text: #0E0F0C;
-    --text-muted: #454745;
-    --primary: #163300;
-    --primary-soft: rgba(22, 51, 0, 0.08);
-    --primary-foreground: #FFFFFF;
-    --accent: #9FE870;
-    --accent-foreground: #163300;
-    --secondary: #163300;
-    --secondary-soft: rgba(22, 51, 0, 0.08);
-    --secondary-foreground: #9FE870;
-    --muted: rgba(22, 51, 0, 0.08);
-    --muted-foreground: #454745;
-    --info: #163300;
-    --info-soft: #A0E1E1;
-    --warning: #3A341C;
-    --warning-soft: #FFEB69;
-    --success: #2F5711;
-    --success-soft: #DFF2D2;
-    --danger: #A8200D;
-    --danger-soft: #F6DDD8;
-    --mint: #F3F7F0;
-    --aqua: #E9F7F7;
-    --peach: #FFF0E6;
-    --lavender: #F4EAF7;
-    --lemon: #FFF9D9;
-    --ink: #163300;
+    --bg-dark: hsl(203 22% 90%);
+    --bg: hsl(203 45% 95%);
+    --bg-light: hsl(203 100% 100%);
+    --text: hsl(204 66% 4%);
+    --text-muted: hsl(202 14% 28%);
+    --highlight: hsl(203 100% 100%);
+    --border: hsl(202 8% 50%);
+    --border-muted: hsl(203 11% 62%);
+    --primary: hsl(196 100% 18%);
+    --secondary: hsl(29 99% 22%);
+    --danger: hsl(9 21% 41%);
+    --warning: hsl(52 23% 34%);
+    --success: hsl(147 19% 36%);
+    --info: hsl(217 22% 41%);
   }
 
   .dark {
-    --background: #121511;
-    --background-high: #163300;
-    --surface: #1B2118;
-    --surface-strong: #23301C;
-    --border: rgba(255, 255, 255, 0.14);
-    --text: #FFFFFF;
-    --text-muted: #D7DDD1;
-    --primary: #9FE870;
-    --primary-soft: rgba(159, 232, 112, 0.16);
-    --primary-foreground: #163300;
-    --accent: #9FE870;
-    --accent-foreground: #163300;
-    --secondary: #FFFFFF;
-    --secondary-soft: rgba(255, 255, 255, 0.12);
-    --secondary-foreground: #163300;
-    --muted: rgba(255, 255, 255, 0.10);
-    --muted-foreground: #D7DDD1;
-    --info: #A0E1E1;
-    --info-soft: #173334;
-    --warning: #FFEB69;
-    --warning-soft: #3A341C;
-    --success: #9FE870;
-    --success-soft: #253B18;
-    --danger: #FFC091;
-    --danger-soft: #320707;
-    --mint: #253B18;
-    --aqua: #173334;
-    --peach: #3A2418;
-    --lavender: #260A2F;
-    --lemon: #3A341C;
-    --ink: #163300;
+    --bg-dark: hsl(206 53% 1%);
+    --bg: hsl(203 34% 4%);
+    --bg-light: hsl(202 19% 9%);
+    --text: hsl(203 89% 95%);
+    --text-muted: hsl(203 14% 69%);
+    --highlight: hsl(202 10% 39%);
+    --border: hsl(202 14% 28%);
+    --border-muted: hsl(202 20% 18%);
+    --primary: hsl(201 72% 67%);
+    --secondary: hsl(24 67% 67%);
+    --danger: hsl(9 26% 64%);
+    --warning: hsl(52 19% 57%);
+    --success: hsl(146 17% 59%);
+    --info: hsl(217 28% 65%);
   }
 }
