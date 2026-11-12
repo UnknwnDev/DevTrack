@@ -3,9 +3,10 @@ import { Link } from 'expo-router';
 import { useColorScheme } from 'nativewind';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Screen } from '@/components/ui/screen';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 export default function WelcomeScreen() {
-  const { colorScheme, toggleColorScheme } = useColorScheme();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -13,23 +14,10 @@ export default function WelcomeScreen() {
   }, []);
 
   return (
-    <View className="flex-1 bg-app p-6 justify-between items-center web:py-16">
+    <Screen className="p-6 justify-between items-center web:py-16">
 
       {/* Top Header / Theme Toggle */}
-      <View className="w-full flex-row justify-end">
-        <Pressable
-          onPress={toggleColorScheme}
-          className="bg-app-light border border-border px-4 py-2 rounded-full active:opacity-75"
-        >
-          <Text className="text-text font-semibold text-xs">
-            {!isMounted
-              ? 'Loading...'
-              : colorScheme === 'dark'
-                ? '☀️ Light Mode'
-                : '🌙 Dark Mode'}
-          </Text>
-        </Pressable>
-      </View>
+      <ThemeToggle />
 
       {/* Hero Content */}
       <View className="items-center max-w-md w-full">
@@ -52,6 +40,6 @@ export default function WelcomeScreen() {
           <Button label='Create Account' icon='userPlus' variant='secondary' />
         </Link>
       </View>
-    </View>
+    </Screen>
   );
 }

@@ -4,36 +4,38 @@
 
 @layer base {
   :root {
-    --bg-dark: hsl(203 22% 90%);
-    --bg: hsl(203 45% 95%);
-    --bg-light: hsl(203 100% 100%);
-    --text: hsl(204 66% 4%);
-    --text-muted: hsl(202 14% 28%);
-    --highlight: hsl(203 100% 100%);
-    --border: hsl(202 8% 50%);
-    --border-muted: hsl(203 11% 62%);
-    --primary: hsl(196 100% 18%);
-    --secondary: hsl(29 99% 22%);
-    --danger: hsl(9 21% 41%);
-    --warning: hsl(52 23% 34%);
-    --success: hsl(147 19% 36%);
-    --info: hsl(217 22% 41%);
+    --bg-dark: 203 22% 90%;
+    --bg: 203 45% 95%;
+    --bg-light: 203 100% 100%;
+    --text: 204 66% 4%;
+    --text-muted: 202 14% 28%;
+    --highlight: 203 100% 100%;
+    --border: 202 8% 50%;
+    --border-muted: 203 11% 62%;
+    --primary: 196 100% 18%;
+    --secondary: 29 99% 22%;
+    --danger: 9 21% 41%;
+    --warning: 52 23% 34%;
+    --success: 147 19% 36%;
+    --info: 217 22% 41%;
   }
 
-  .dark {
-    --bg-dark: hsl(206 53% 1%);
-    --bg: hsl(203 34% 4%);
-    --bg-light: hsl(202 19% 9%);
-    --text: hsl(203 89% 95%);
-    --text-muted: hsl(203 14% 69%);
-    --highlight: hsl(202 10% 39%);
-    --border: hsl(202 14% 28%);
-    --border-muted: hsl(202 20% 18%);
-    --primary: hsl(201 72% 67%);
-    --secondary: hsl(24 67% 67%);
-    --danger: hsl(9 26% 64%);
-    --warning: hsl(52 19% 57%);
-    --success: hsl(146 17% 59%);
-    --info: hsl(217 28% 65%);
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-dark: 206 53% 1%;
+      --bg: 203 34% 4%;
+      --bg-light: 202 19% 9%;
+      --text: 203 89% 95%;
+      --text-muted: 203 14% 69%;
+      --highlight: 202 10% 39%;
+      --border: 202 14% 28%;
+      --border-muted: 202 20% 18%;
+      --primary: 201 72% 67%;
+      --secondary: 24 67% 67%;
+      --danger: 9 26% 64%;
+      --warning: 52 19% 57%;
+      --success: 146 17% 59%;
+      --info: 217 28% 65%;
+    }
   }
 }
