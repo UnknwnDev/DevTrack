@@ -1,20 +1,36 @@
-import { Link, router } from 'expo-router';
-import { Pressable, Text, TextInput, View } from 'react-native';
+import { Link, router } from "expo-router";
+import { Alert, Pressable, Text, TextInput, View } from "react-native";
 
-import { Button } from '@/components/ui/button';
-import { Screen } from '@/components/ui/screen';
-import { useSession } from '@/features/auth/auth-session';
-import { useAuthForm } from '@/features/auth/hooks/use-auth-form';
+import { Button } from "@/components/ui/button";
+import { Screen } from "@/components/ui/screen";
+import { useSession } from "@/features/auth/auth-session";
+import { useAuthForm } from "@/features/auth/hooks/use-auth-form";
+import { loginUser } from "@/features/auth/auth.service";
+import { useState } from "react";
+import { useAppTheme } from "@/theme/theme";
 
 export default function LoginScreen() {
+  const { theme } = useAppTheme();
   const { signIn } = useSession();
-  const { email, password, setEmail, setPassword, isValid } = useAuthForm();
+  const { email, password, setEmail, setPassword } = useAuthForm();
 
-  function handleSubmit() {
-    if (!isValid) return;
-    signIn(email);
-    router.replace('/');
-  }
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert("Error", "Please fill in all fields.");
+      return;
+    }
+
+    try {
+      const data = await loginUser({ email, password });
+
+      console.log("Logged in successfully! Token:", data.access_token);
+
+      signIn(data.access_token);
+      router.replace("/");
+    } catch (err: any) {
+      Alert.alert("Login Failed", err.message);
+    }
+  };
 
   return (
     <Screen className="justify-between max-w-md mx-auto w-full">
@@ -36,7 +52,7 @@ export default function LoginScreen() {
             value={email}
             onChangeText={setEmail}
             placeholder="Enter your email"
-            placeholderTextColor="var(--text-muted)"
+            placeholderTextColor={theme.textMuted}
             keyboardType="email-address"
             autoCapitalize="none"
             className="bg-app-light border border-border text-text px-4 py-3.5 rounded-xl text-base"
@@ -49,18 +65,13 @@ export default function LoginScreen() {
             value={password}
             onChangeText={setPassword}
             placeholder="Enter your password"
-            placeholderTextColor="var(--text-muted)"
+            placeholderTextColor={theme.textMuted}
             secureTextEntry
             className="bg-app-light border border-border text-text px-4 py-3.5 rounded-xl text-base"
           />
         </View>
 
-        <Button
-          label="Log In"
-          onPress={handleSubmit}
-          disabled={!isValid}
-          className="mt-2"
-        />
+        <Button label="Log In" onPress={handleLogin} className="mt-2" />
       </View>
 
       {/* Footer / Signup Link */}

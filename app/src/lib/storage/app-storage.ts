@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const memoryStore = new Map<string, string>();
 
@@ -20,11 +20,16 @@ export const appStorage = {
   async remove(key: string) {
     memoryStore.delete(key);
     globalThis.localStorage?.removeItem(key);
+    await AsyncStorage.removeItem(key);
   },
 };
 
 async function readValue(key: string) {
-  return globalThis.localStorage?.getItem(key) ?? (await AsyncStorage.getItem(key)) ?? memoryStore.get(key);
+  return (
+    globalThis.localStorage?.getItem(key) ??
+    (await AsyncStorage.getItem(key)) ??
+    memoryStore.get(key)
+  );
 }
 
 async function writeValue(key: string, value: string) {

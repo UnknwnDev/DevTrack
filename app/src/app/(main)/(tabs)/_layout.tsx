@@ -1,66 +1,33 @@
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useAppTheme } from "@/theme/theme";
 import { Tabs } from "expo-router";
+import { CustomTabBar } from "@/components/ui/tab-bar";
 
 export default function TabsLayout() {
-  const { theme } = useAppTheme();
-
   return (
     <Tabs
+      tabBar={(props) => <CustomTabBar {...props} />}
       screenOptions={{
         headerShown: false,
-        tabBarShowLabel: false,
-        tabBarActiveTintColor: theme.primary,
-        tabBarInactiveTintColor: theme.textMuted,
-        tabBarStyle: {
-          position: "absolute",
-          left: 25,
-          right: 25,
-          bottom: 20,
-          height: 50,
-          paddingTop: 4,
-          paddingBottom: 3,
-          borderRadius: 10,
-          backgroundColor: theme.bgLight,
-          borderWidth: 1,
-          borderColor: theme.borderMuted,
-          elevation: 0,
-        },
-        tabBarItemStyle: {
-          alignItems: "center",
-          justifyContent: "center",
-        },
-        tabBarBackground: () => (
-          <View
-            pointerEvents="none"
-            style={[StyleSheet.absoluteFillObject, {}]}
-          />
-        ),
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color, focused }) => (
-            <View
-              style={{
-                width: 36,
-                height: 36,
-                borderRadius: 18,
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: focused ? theme.primary : "transparent",
-              }}
-            >
-              <MaterialIcons
-                name="home"
-                size={21}
-                color={focused ? theme.bgLight : color}
-              />
-            </View>
-          ),
+          tabBarIcon: ({ color, focused, size }) => {
+            const { theme } = useAppTheme();
+            return (
+              <View className="w-14 h-14 rounded-full items-center justify-center bg-primary">
+                <MaterialIcons
+                  name="home"
+                  size={size}
+                  color={focused ? theme.bgLight : color}
+                />
+              </View>
+            );
+          },
         }}
       />
     </Tabs>

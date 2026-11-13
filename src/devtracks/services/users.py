@@ -1,4 +1,5 @@
 from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -38,7 +39,10 @@ class UserService:
     def login_user(self, payload: UserLoginRequest) -> str:
         user = self._db.scalars(select(User).where(User.email == payload.email)).first()
 
-        if not user or not self._ph.verify(user.hash_pwd, payload.password):
+        try:
+            if not user or not self._ph.verify(user.hash_pwd, payload.password):
+                raise InvalidCredentials
+        except VerifyMismatchError:
             raise InvalidCredentials
 
         access_token = create_access_token(user.id)

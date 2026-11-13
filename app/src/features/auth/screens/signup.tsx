@@ -1,20 +1,37 @@
-import { View, Text, TextInput, Pressable } from 'react-native';
-import { router, Link } from 'expo-router';
+import { View, Text, TextInput, Pressable, Alert } from "react-native";
+import { router, Link } from "expo-router";
 
-import { Screen } from '@/components/ui/screen';
-import { Button } from '@/components/ui/button';
-import { useSession } from '@/features/auth/auth-session';
-import { useAuthForm } from '@/features/auth/hooks/use-auth-form';
+import { Screen } from "@/components/ui/screen";
+import { Button } from "@/components/ui/button";
+import { useSession } from "@/features/auth/auth-session";
+import { useAuthForm } from "@/features/auth/hooks/use-auth-form";
+import { useAppTheme } from "@/theme/theme";
+import { loginUser, signInUser } from "../auth.service";
 
 export default function SignupScreen() {
+  const { theme } = useAppTheme();
   const { signIn } = useSession();
-  const { email, password, setEmail, setPassword, isValid } = useAuthForm('');
+  const { email, name, password, setEmail, setName, setPassword } =
+    useAuthForm("");
 
-  function handleSubmit() {
-    if (!isValid) return;
-    signIn(email);
-    router.replace('/');
-  }
+  const handleSignIn = async () => {
+    if (!email || !name || !password) {
+      Alert.alert("Error", "Please fill in all fields.");
+      return;
+    }
+
+    try {
+      const sign_data = await signInUser({ email, name, password });
+      const login_data = await loginUser({ email, password });
+
+      console.log("Sign in successfully! Token:", login_data.access_token);
+
+      signIn(login_data.access_token);
+      router.replace("/");
+    } catch (err: any) {
+      Alert.alert("Sign up Failed", err.message);
+    }
+  };
 
   return (
     <Screen className="justify-between max-w-md mx-auto w-full">
@@ -36,8 +53,22 @@ export default function SignupScreen() {
             value={email}
             onChangeText={setEmail}
             placeholder="Enter your email"
-            placeholderTextColor="var(--text-muted)"
+            placeholderTextColor={theme.textMuted}
+            inputMode="email"
             keyboardType="email-address"
+            autoCapitalize="none"
+            className="bg-app-light border border-border text-text px-4 py-3.5 rounded-xl text-base"
+          />
+        </View>
+
+        <View className="gap-2">
+          <Text className="text-text font-medium text-sm">name</Text>
+          <TextInput
+            value={name}
+            onChangeText={setName}
+            placeholder="Enter your name"
+            placeholderTextColor={theme.textMuted}
+            inputMode="text"
             autoCapitalize="none"
             className="bg-app-light border border-border text-text px-4 py-3.5 rounded-xl text-base"
           />
@@ -49,7 +80,7 @@ export default function SignupScreen() {
             value={password}
             onChangeText={setPassword}
             placeholder="Create a password"
-            placeholderTextColor="var(--text-muted)"
+            placeholderTextColor={theme.textMuted}
             secureTextEntry
             className="bg-app-light border border-border text-text px-4 py-3.5 rounded-xl text-base"
           />
@@ -57,8 +88,7 @@ export default function SignupScreen() {
 
         <Button
           label="Create Account"
-          onPress={handleSubmit}
-          disabled={!isValid}
+          onPress={handleSignIn}
           className="mt-2"
         />
       </View>

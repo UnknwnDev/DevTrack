@@ -1,9 +1,12 @@
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { Screen } from "@/components/ui/screen";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useSession } from "@/features/auth/auth-session";
 
 export default function HomeScreen() {
+  const { signOut } = useSession();
+
   return (
     <Screen className="">
       {/* Header */}
@@ -14,8 +17,10 @@ export default function HomeScreen() {
             Welcome back!
           </Text>
         </View>
-
-        <View className="w-14 h-14 mt-2 bg-secondary rounded-full shadow-md"></View>
+        <TouchableOpacity
+          onPress={() => signOut()}
+          className="w-14 h-14 mt-2 bg-secondary rounded-full shadow-md"
+        ></TouchableOpacity>
       </View>
 
       <Card className="">
@@ -68,6 +73,57 @@ export default function HomeScreen() {
           />
         </View>
 
+        <Card className="flex-row items-center justify-between gap-6 py-4 my-1.5">
+          <Text className="text-text text-lg">8:04</Text>
+
+          <View
+            className="h-12 w-1 flex-shrink-0 rounded-full bg-primary"
+            style={{ boxShadow: "0px 0px 4px 4px rgba(86, 217, 255, 0.35)" }}
+          />
+
+          <View className="flex-1">
+            <Text className="text-text text-lg font-semibold">
+              SQL Practice
+            </Text>
+            <Text className="text-text-muted">Fundamentals</Text>
+          </View>
+
+          <Text className="text-text text-lg">56m</Text>
+        </Card>
+        <Card className="flex-row items-center justify-between gap-6 py-4 my-1.5">
+          <Text className="text-text text-lg">8:04</Text>
+
+          <View
+            className="h-12 w-1 flex-shrink-0 rounded-full bg-primary"
+            style={{ boxShadow: "0px 0px 4px 4px rgba(86, 217, 255, 0.35)" }}
+          />
+
+          <View className="flex-1">
+            <Text className="text-text text-lg font-semibold">
+              SQL Practice
+            </Text>
+            <Text className="text-text-muted">Fundamentals</Text>
+          </View>
+
+          <Text className="text-text text-lg">56m</Text>
+        </Card>
+        <Card className="flex-row items-center justify-between gap-6 py-4 my-1.5">
+          <Text className="text-text text-lg">8:04</Text>
+
+          <View
+            className="h-12 w-1 flex-shrink-0 rounded-full bg-primary"
+            style={{ boxShadow: "0px 0px 4px 4px rgba(86, 217, 255, 0.35)" }}
+          />
+
+          <View className="flex-1">
+            <Text className="text-text text-lg font-semibold">
+              SQL Practice
+            </Text>
+            <Text className="text-text-muted">Fundamentals</Text>
+          </View>
+
+          <Text className="text-text text-lg">56m</Text>
+        </Card>
         <Card className="flex-row items-center justify-between gap-6 py-4 my-1.5">
           <Text className="text-text text-lg">8:04</Text>
 

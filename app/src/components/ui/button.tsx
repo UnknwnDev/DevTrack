@@ -6,9 +6,10 @@ import {
 } from "react-native";
 import { Icon, type IconName } from "@/components/ui/icon";
 import { twMerge } from "tailwind-merge";
+import { useColorScheme } from "nativewind";
 
 type ButtonProps = PressableProps & {
-  label: string;
+  label?: string;
   variant?: "primary" | "secondary" | "outline" | "ghost";
   icon?: IconName;
   loading?: boolean;
@@ -17,7 +18,7 @@ type ButtonProps = PressableProps & {
 };
 
 export function Button({
-  label,
+  label = "",
   variant = "primary",
   icon,
   loading = false,
@@ -28,27 +29,26 @@ export function Button({
   ...props
 }: ButtonProps) {
   const isDisabled = disabled || loading;
+  const { colorScheme } = useColorScheme();
 
   // Secondary now uses subtle brightness shifts to look darker/lighter on hover
   const variantStyles = {
-    primary:
-      "bg-primary border-primary hover:bg-secondary hover:border-secondary",
-    secondary: "bg-text border-border hover:bg-text-muted",
-    outline:
-      "bg-transparent border-border hover:bg-secondary hover:border-secondary",
-    ghost: "bg-transparent border-transparent hover:bg-secondary/15",
+    primary: "bg-primary border-primary",
+    secondary: "bg-text border-border",
+    outline: "bg-transparent border-border",
+    ghost: "bg-transparent border-transparent",
   }[variant];
 
   const textStyles = {
-    primary: "text-app-dark font-bold hover:text-app-dark",
+    primary: "text-app-dark font-bold",
     secondary: "text-app-light font-semibold",
-    outline: "text-text font-semibold hover:text-app-dark",
-    ghost: "text-text font-semibold hover:text-secondary",
+    outline: "text-text font-semibold",
+    ghost: "text-text font-semibold",
   }[variant];
 
   const variantTextColors = {
     primary: "#fff", // app-dark
-    secondary: "#000", // app-light
+    secondary: colorScheme === "dark" ? "#000" : "#fff", // app-light
     outline: "#fff", // text
     ghost: "#fff", // text
   } as const;
@@ -58,7 +58,7 @@ export function Button({
       disabled={isDisabled}
       className={twMerge(
         `
-        flex-row items-center justify-center gap-2 py-1 px-3 rounded-xl border transition-colors
+        flex-row items-center justify-center gap-2 py-1 px-4 rounded-xl border transition-colors
         ${fullWidth ? "w-full" : "self-start"}
         ${variantStyles}
         ${isDisabled ? "opacity-50" : ""}

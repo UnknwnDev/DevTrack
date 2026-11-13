@@ -1,23 +1,23 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-import type { User } from '@/features/auth/types';
-import { appStorage } from '@/lib/storage/app-storage';
+import type { User } from "@/features/auth/types";
+import { appStorage } from "@/lib/storage/app-storage";
 
 type SessionContextValue = {
   user: User | null;
   isSignedIn: boolean;
   hasHydrated: boolean;
-  signIn: (email: string) => void;
+  signIn: (access_token: string) => void;
   signOut: () => void;
 };
 
 const SessionContext = createContext<SessionContextValue | null>(null);
-const sessionKey = 'auth-session';
+const sessionKey = "auth-session";
 
 const demoUser: User = {
-  id: 'starter-user',
-  name: 'Starter User',
-  email: 'hello@example.com',
+  id: "starter-user",
+  name: "Starter User",
+  email: "hello@example.com",
 };
 
 export function SessionProvider({ children }: { children: React.ReactNode }) {
@@ -50,14 +50,16 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     [hasHydrated, user],
   );
 
-  return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>
+  return (
+    <SessionContext.Provider value={value}>{children}</SessionContext.Provider>
+  );
 }
 
 export function useSession() {
   const value = useContext(SessionContext);
 
   if (!value) {
-    throw new Error('useSession must be used inside SessionProvider');
+    throw new Error("useSession must be used inside SessionProvider");
   }
 
   return value;
