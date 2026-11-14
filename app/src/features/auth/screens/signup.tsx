@@ -7,12 +7,14 @@ import { useSession } from "@/features/auth/auth-session";
 import { useAuthForm } from "@/features/auth/hooks/use-auth-form";
 import { useAppTheme } from "@/theme/theme";
 import { loginUser, signInUser } from "../auth.service";
+import { useApiClient } from "@/lib/api/api";
 
 export default function SignupScreen() {
   const { theme } = useAppTheme();
   const { signIn } = useSession();
   const { email, name, password, setEmail, setName, setPassword } =
     useAuthForm("");
+  const apiClient = useApiClient();
 
   const handleSignIn = async () => {
     if (!email || !name || !password) {
@@ -21,12 +23,12 @@ export default function SignupScreen() {
     }
 
     try {
-      const sign_data = await signInUser({ email, name, password });
-      const login_data = await loginUser({ email, password });
+      const sign_data = await signInUser(apiClient, { email, name, password });
+      const login_data = await loginUser(apiClient, { email, password });
 
       console.log("Sign in successfully! Token:", login_data.access_token);
 
-      signIn(login_data.access_token);
+      signIn(login_data.refresh_token, login_data.access_token, sign_data.user);
       router.replace("/");
     } catch (err: any) {
       Alert.alert("Sign up Failed", err.message);

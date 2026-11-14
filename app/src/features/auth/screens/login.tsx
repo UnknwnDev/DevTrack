@@ -6,13 +6,14 @@ import { Screen } from "@/components/ui/screen";
 import { useSession } from "@/features/auth/auth-session";
 import { useAuthForm } from "@/features/auth/hooks/use-auth-form";
 import { loginUser } from "@/features/auth/auth.service";
-import { useState } from "react";
 import { useAppTheme } from "@/theme/theme";
+import { useApiClient } from "@/lib/api/api";
 
 export default function LoginScreen() {
   const { theme } = useAppTheme();
   const { signIn } = useSession();
   const { email, password, setEmail, setPassword } = useAuthForm();
+  const apiClient = useApiClient();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -21,11 +22,11 @@ export default function LoginScreen() {
     }
 
     try {
-      const data = await loginUser({ email, password });
+      const data = await loginUser(apiClient, { email, password });
 
       console.log("Logged in successfully! Token:", data.access_token);
 
-      signIn(data.access_token);
+      signIn(data.refresh_token, data.access_token, data.user);
       router.replace("/");
     } catch (err: any) {
       Alert.alert("Login Failed", err.message);

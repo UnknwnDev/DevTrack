@@ -3,51 +3,70 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { User } from "@/features/auth/types";
 import { appStorage } from "@/lib/storage/app-storage";
 
+type StoredSession = {
+  user: User;
+  access_token: string;
+  refresh_token: string;
+};
+
 type SessionContextValue = {
   user: User | null;
+  accessToken: string | null;
+  refreshToken: string | null;
   isSignedIn: boolean;
   hasHydrated: boolean;
-  signIn: (access_token: string) => void;
+  onAccessTokenUpdated: (accessToken: string) => void;
+  signIn: (refreshToken: string, accessToken: string, userData: User) => void;
   signOut: () => void;
 };
 
 const SessionContext = createContext<SessionContextValue | null>(null);
 const sessionKey = "auth-session";
 
-const demoUser: User = {
-  id: "starter-user",
-  name: "Starter User",
-  email: "hello@example.com",
-};
-
 export function SessionProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [refreshToken, setRefreshToken] = useState<string | null>(null);
   const [hasHydrated, setHasHydrated] = useState(false);
 
   useEffect(() => {
-    appStorage.get<User | null>(sessionKey, null).then((storedUser) => {
-      setUser(storedUser);
+    appStorage.get<StoredSession | null>(sessionKey, null).then((session) => {
+      setUser(session?.user ?? null);
+      setAccessToken(session?.access_token ?? null);
+      setRefreshToken(session?.refresh_token ?? null);
       setHasHydrated(true);
     });
   }, []);
 
-  const value = useMemo(
+  const value = useMemo<SessionContextValue>(
     () => ({
       user,
-      isSignedIn: Boolean(user),
+      accessToken,
+      refreshToken,
+      isSignedIn: Boolean(accessToken),
       hasHydrated,
-      signIn(email: string) {
-        const nextUser = { ...demoUser, email };
+      onAccessTokenUpdated: (accessToken: string) =>
+        setAccessToken(accessToken),
 
-        setUser(nextUser);
-        void appStorage.set(sessionKey, nextUser);
+      signIn(nextRefreshToken, nextAccessToken, userData) {
+        const session = {
+          user: userData,
+          access_token: nextAccessToken,
+          refresh_token: nextRefreshToken,
+        };
+        setUser(userData);
+        setAccessToken(nextAccessToken);
+        setRefreshToken(nextRefreshToken);
+        void appStorage.set(sessionKey, session);
       },
+
       signOut() {
         setUser(null);
+        setAccessToken(null);
         void appStorage.remove(sessionKey);
       },
     }),
-    [hasHydrated, user],
+    [user, accessToken, refreshToken, hasHydrated],
   );
 
   return (
