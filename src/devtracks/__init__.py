@@ -4,7 +4,7 @@ from jwt import InvalidTokenError
 from sqlalchemy.orm import Session
 
 from devtracks.api.v1 import auth
-from devtracks.core.security import verify_access_token
+from devtracks.core.security import verify_token
 from devtracks.db import get_session
 from devtracks.db.schema import User
 from devtracks.schemas.users import TokenData
@@ -28,7 +28,7 @@ async def get_current_user(
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = verify_access_token(token)
+        payload = verify_token(token, "access")
 
         user_id = payload.get("sub")
         if user_id is None:

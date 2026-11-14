@@ -6,7 +6,7 @@ from devtracks.exceptions.exceptions import ActivityNotFound
 from devtracks.schemas.activity import ActivityLogRequest
 
 
-class LogService:
+class ActivityService:
     def __init__(self, session: Session, current_user: User) -> None:
         self._db = session
         self._cur_user = current_user
@@ -40,3 +40,10 @@ class LogService:
         self._db.refresh(new_session)
 
         return new_session
+
+    def delete_activity(self, id) -> Activity:
+        activity = self.get_activity_by_id(id)
+        self._db.delete(activity)
+        self._db.commit()
+
+        return id
