@@ -3,7 +3,7 @@ from argon2.exceptions import VerifyMismatchError
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from devtracks.core.security import create_access_token
+from devtracks.core.security import create_access_token, create_refresh_token
 from devtracks.db.schema import User
 from devtracks.exceptions.exceptions import (
     InvalidCredentials,
@@ -36,7 +36,7 @@ class UserService:
 
         return new_user
 
-    def login_user(self, payload: UserLoginRequest) -> str:
+    def login_user(self, payload: UserLoginRequest) -> tuple[str, str, User]:
         user = self._db.scalars(select(User).where(User.email == payload.email)).first()
 
         try:
@@ -46,7 +46,8 @@ class UserService:
             raise InvalidCredentials
 
         access_token = create_access_token(user.id)
-        return access_token
+        refresh_token = create_refresh_token(user.id)
+        return access_token, refresh_token, user
 
     def get_user_by_id(self, id) -> User:
         user = self._db.scalars(select(User).where(User.id == id)).first()

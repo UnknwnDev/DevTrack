@@ -6,8 +6,19 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 class TokenResponse(BaseModel):
     access_token: str
+    token_type: str = "bearer"
+
+
+class LoginResponse(BaseModel):
+    access_token: str
+    refresh_token: str
     token_type: str
     message: str
+    user: dict
+
+
+class RefreshRequst(BaseModel):
+    refresh_token: str
 
 
 class TokenData(BaseModel):
